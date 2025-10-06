@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="monetag" content="ab213c6956542fdcd1b5fdc39d2d8517">
+    <title>Galaxy Code: Invasion</title>
+    <link rel="icon" href="icono.png">
+ 
+    <style>
+        /* Estilos generales */
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Orbitron', 'Arial', sans-serif;
+        }
+        
+        @font-face {
+            font-family: 'Orbitron';
+            src: url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&display=swap');
+        }
+        
+        body {
+            background-color: #0a0a20;
+            color: #ffffff;
+            overflow-x: hidden;
+            background-image: radial-gradient(circle at 20% 30%, rgba(30, 30, 100, 0.8) 0%, transparent 20%), radial-gradient(circle at 80% 70%, rgba(50, 0, 100, 0.6) 0%, transparent 20%);
+        }
+        /* Efecto de estrellas */
+        
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+        
+        .star {
+            position: absolute;
+            background-color: white;
+            border-radius: 50%;
+            animation: twinkle var(--duration) infinite ease-in-out;
+        }
+        
+        @keyframes twinkle {
+            0%,
+            100% {
+                opacity: 0.2;
+            }
+            50% {
+                opacity: 1;
+            }
+        }
+        /* Nave animada */
+        
+        .spaceship {
+            position: absolute;
+            width: 80px;
+            height: 40px;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 50"><path d="M10,25 L90,10 L90,40 Z" fill="%2300a2ff" stroke="%2300f2ff" stroke-width="2"/><circle cx="85" cy="25" r="5" fill="%23ff6600"/></svg>');
+            background-size: contain;
+            background-repeat: no-repeat;
+            z-index: -1;
+            animation: fly 20s linear infinite;
+            opacity: 0.7;
+        }
+        
+        @keyframes fly {
+            0% {
+                transform: translateX(-100px) translateY(100px) rotate(10deg);
+            }
+            100% {
+                transform: translateX(calc(100vw + 100px)) translateY(-100px) rotate(10deg);
+            }
+        }
+        /* Contenedor principal */
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+        }
+        /* Header */
+        
+        header {
+            text-align: center;
+            padding: 40px 0;
+            position: relative;
+        }
+        
+        .logo {
+            font-size: 3.5rem;
+            font-weight: 700;
+            color: #00a2ff;
+            text-shadow: 0 0 10px #00a2ff, 0 0 20px #0055ff;
+            margin-bottom: 20px;
+            letter-spacing: 3px;
+        }
+        
+        .tagline {
+            font-size: 1.5rem;
+            color: #00f2ff;
+            margin-bottom: 30px;
+            text-shadow: 0 0 5px #00a2ff;
+        }
+        /* Botones */
+        
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background: linear-gradient(45deg, #0055ff, #00a2ff);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: bold;
+            margin: 10px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 15px rgba(0, 170, 255, 0.5);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0 25px rgba(0, 170, 255, 0.8);
+            background: linear-gradient(45deg, #00a2ff, #00f2ff);
+        }
+        
+        .btn-secondary {
+            background: linear-gradient(45deg, #6a00ff, #a200ff);
+            box-shadow: 0 0 15px rgba(170, 0, 255, 0.5);
+        }
+        
+        .btn-secondary:hover {
+            box-shadow: 0 0 25px rgba(170, 0, 255, 0.8);
+            background: linear-gradient(45deg, #a200ff, #f200ff);
+        }
+        /* Secciones */
+        
+        section {
+            padding: 60px 0;
+            border-bottom: 1px solid rgba(0, 162, 255, 0.2);
+        }
+        
+        h2 {
+            font-size: 2.5rem;
+            color: #00a2ff;
+            margin-bottom: 30px;
+            text-align: center;
+            text-shadow: 0 0 10px rgba(0, 162, 255, 0.5);
+        }
+        
+        h3 {
+            font-size: 1.8rem;
+            color: #00f2ff;
+            margin: 20px 0;
+        }
+        
+        p {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            color: #ccccff;
+        }
+        /* Características */
+        
+        .features {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 40px;
+        }
+        
+        .feature {
+            flex: 1;
+            min-width: 300px;
+            background: rgba(10, 30, 80, 0.3);
+            border-radius: 15px;
+            padding: 30px;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(0, 162, 255, 0.2);
+            transition: transform 0.3s ease;
+        }
+        
+        .feature:hover {
+            transform: translateY(-10px);
+            border-color: rgba(0, 162, 255, 0.5);
+            box-shadow: 0 10px 30px rgba(0, 100, 255, 0.2);
+        }
+        
+        .feature-icon {
+            font-size: 2.5rem;
+            color: #00a2ff;
+            margin-bottom: 20px;
+        }
+        /* Galería */
+        
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 40px;
+        }
+        
+        .gallery-item {
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+            height: 200px;
+            border: 1px solid rgba(0, 162, 255, 0.3);
+            transition: transform 0.3s ease;
+        }
+        
+        .gallery-item:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(0, 162, 255, 0.5);
+        }
+        
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .gallery-item:hover img {
+            transform: scale(1.1);
+        }
+        /* Descarga */
+        
+        .download-section {
+            text-align: center;
+            background: rgba(0, 50, 100, 0.2);
+            padding: 60px 20px;
+            border-radius: 15px;
+            margin-top: 40px;
+            border: 1px solid rgba(0, 162, 255, 0.3);
+        }
+        
+        .download-info {
+            max-width: 800px;
+            margin: 0 auto 30px;
+        }
+        
+        .system-requirements {
+            background: rgba(0, 30, 60, 0.4);
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 30px;
+            text-align: left;
+            display: inline-block;
+        }
+        
+        .system-requirements h4 {
+            color: #00a2ff;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        
+        .system-requirements ul {
+            list-style-type: none;
+        }
+        
+        .system-requirements li {
+            margin-bottom: 10px;
+            position: relative;
+            padding-left: 25px;
+        }
+        
+        .system-requirements li:before {
+            content: "➤";
+            color: #00f2ff;
+            position: absolute;
+            left: 0;
+        }
+        /* Footer */
+        
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 20px 0;
+        }
+        
+        .social-icon {
+            color: #00a2ff;
+            width: 40px;
+            height: 40px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .social-icon svg {
+            width: 100%;
+            height: 100%;
+        }
+        
+        .social-icon:hover {
+            color: #00f2ff;
+            transform: translateY(-3px) scale(1.1);
+        }
+        /* Cambia el color del hover para cada red social */
+        
+        .social-icon[title="Twitter"]:hover {
+            color: #1DA1F2;
+        }
+        
+        .social-icon[title="Instagram"]:hover {
+            color: #E1306C;
+        }
+        
+        .social-icon[title="TikTok"]:hover {
+            color: #FF0050;
+        }
+        /* Responsive */
+        
+        @media (max-width: 768px) {
+            .logo {
+                font-size: 2.5rem;
+            }
+            .tagline {
+                font-size: 1.2rem;
+            }
+            h2 {
+                font-size: 2rem;
+            }
+            .features {
+                flex-direction: column;
+            }
+            .feature {
+                min-width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Efecto de estrellas -->
+    <div class="stars" id="stars"></div>
+
+    <!-- Naves animadas -->
+    <div class="spaceship" style="top: 20%; animation-delay: 0s;"></div>
+    <div class="spaceship" style="top: 70%; animation-delay: 5s; animation-duration: 25s;"></div>
+    <div class="spaceship" style="top: 40%; animation-delay: 10s; animation-duration: 30s; transform: scaleX(-1);"></div>
+
+    <div class="container">
+        <header>
+            <h1 class="logo">GALAXY CODE: INVASION</h1>
+            <p class="tagline">Defiende la galaxia en esta épica aventura espacial</p>
+            <a href="https://www.mediafire.com/file/bdtvnszjqeh6vgc/GalaxyCodeInstaller.exe/file" class="btn pulse ">Descargar Ahora</a>
+            <a href="#features " class="btn btn-secondary ">Características</a>
+        </header>
+
+        <section id="about ">
+            <h2>SOBRE EL JUEGO</h2>
+            <p>Galaxy Code: Invasion es un emocionante juego de naves espaciales donde debes defender la galaxia de una invasión alienígena. Con gráficos impresionantes, efectos de sonido envolventes y una jugabilidad adictiva, te sumergirás en batallas
+                espaciales llenas de acción.</p>
+            <p>Personaliza tu nave, mejora tus armas y alcanza la puntuación más alta para convertirte en el mejor piloto de la galaxia.</p>
+        </section>
+
+        <section id="features ">
+            <h2>CARACTERÍSTICAS</h2>
+            <div class="features ">
+                <div class="feature ">
+                    <div class="feature-icon ">🚀</div>
+                    <h3>Naves Personalizables</h3>
+                    <p>Elige entre diferentes aspectos para tu nave y desbloquea mejoras con tus puntos.</p>
+                </div>
+                <div class="feature ">
+                    <div class="feature-icon ">💥</div>
+                    <h3>Explosiones Épicas</h3>
+                    <p>Sistema de partículas avanzado para explosiones y efectos visuales impresionantes.</p>
+                </div>
+                <div class="feature ">
+                    <div class="feature-icon ">🎮</div>
+                    <h3>Controles Intuitivos</h3>
+                    <p>Jugabilidad fluida con controles sencillos pero profundos para todos los niveles.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="gallery ">
+            <h2>GALERÍA</h2>
+            <div class="gallery ">
+                <div class="gallery-item ">
+                    <img src="nave.png " alt="Nave espacial ">
+                </div>
+                <div class="gallery-item ">
+                    <img src="nave3.png " alt="Batalla espacial ">
+                </div>
+                <div class="gallery-item ">
+                    <img src="menu_principal.png " alt="Menú principal ">
+                </div>
+                <div class="gallery-item ">
+                    <img src="tienda.png " alt="Tienda de mejoras ">
+                </div>
+            </div>
+        </section>
+
+        <section id="download ">
+            <h2>DESCARGA EL JUEGO</h2>
+            <div class="download-section ">
+                <div class="download-info ">
+                    <h3>¡Prepárate para la batalla!</h3>
+                    <p>Descarga ahora Galaxy Code: Invasion y comienza tu aventura espacial. El juego está disponible para Windows.</p>
+                    <a href="https://www.mediafire.com/file/bdtvnszjqeh6vgc/GalaxyCodeInstaller.exe/file" class="btn pulse " id="download-btn ">Descargar Instalador (v1.3.7)</a>
+                    <p>Tamaño: ~94 MB</p>
+                </div>
+
+                <div class="system-requirements ">
+                    <h4>Requisitos del sistema</h4>
+                    <ul>
+                        <li>Sistema operativo: Windows 7 o superior</li>
+                        <li>Procesador: 2.0 GHz dual core</li>
+                        <li>Memoria: 2 GB RAM</li>
+                        <li>Gráficos: Tarjeta gráfica con soporte para OpenGL 2.1</li>
+                        <li>Almacenamiento: 1 GB de espacio disponible</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="how-to-play ">
+            <h2>CÓMO JUGAR</h2>
+            <div class="features ">
+                <div class="feature ">
+                    <div class="feature-icon ">🕹️</div>
+                    <h3>Controles</h3>
+                    <p><strong>Teclas:</strong> Flechas o WASD para mover la nave<br>
+                        <strong>Espacio:</strong> Disparar<br>
+                        <strong>F11:</strong> Pantalla completa</p>
+                </div>
+                <div class="feature ">
+                    <div class="feature-icon ">🎯</div>
+                    <h3>Objetivo</h3>
+                    <p>Destruye tantas naves enemigas como puedas sin que te golpeen. Cada enemigo destruido te da puntos. ¡Sobrevive y alcanza el primer lugar en el ranking!</p>
+                </div>
+                <div class="feature ">
+                    <div class="feature-icon ">🏆</div>
+                    <h3>Progreso</h3>
+                    <p>Tu puntuación y mejoras se guardan automáticamente. Desbloquea nuevos aspectos para tu nave en la tienda con los puntos que ganes.</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <div class="social-links ">
+            <a href="https://x.com/InvasionCo60346?t=-kDjzjypkzauSsURKAPk9g&s=08 " class="social-icon " title="Twitter ">
+                <svg xmlns="http://www.w3.org/2000/svg " viewBox="0 0 24 24 " width="24 " height="24 " fill="none " stroke="currentColor " stroke-width="2 " stroke-linecap="round " stroke-linejoin="round ">
+                <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z "></path>
+            </svg>
+            </a>
+            <a href="https://www.instagram.com/galaxycodeinvasion_12?igsh=eHRmNDdybWo3cmtq&utm_source=qr " class="social-icon " title="Instagram ">
+                <svg xmlns="http://www.w3.org/2000/svg " viewBox="0 0 24 24 " width="24 " height="24 " fill="none " stroke="currentColor " stroke-width="2 " stroke-linecap="round " stroke-linejoin="round ">
+                <rect x="2 " y="2 " width="20 " height="20 " rx="5 " ry="5 "></rect>
+                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z "></path>
+                <line x1="17.5 " y1="6.5 " x2="17.51 " y2="6.5 "></line>
+            </svg>
+            </a>
+            <a href="https://www.tiktok.com/@galaxy.code.invas?_t=ZS-8yi4rX7YhvD&_r=1 " class="social-icon " title="TikTok ">
+                <svg xmlns="http://www.w3.org/2000/svg " viewBox="0 0 24 24 " width="24 " height="24 " fill="none " stroke="currentColor " stroke-width="2 " stroke-linecap="round " stroke-linejoin="round ">
+                <path d="M12 12a5 5 0 1 0 5 5V7a2 2 0 1 1 2-2h2 "></path>
+            </svg>
+            </a>
+        </div>
+        <p>© 2025 Galaxy Code: Invasion. Todos los derechos reservados.</p>
+        <p>Desarrollado por Galactic Rift Games</p>
+    </footer>
+
+    <script>
+        // Crear estrellas dinámicas
+        function createStars() {
+            const starsContainer = document.getElementById('stars');
+            const starCount = 200;
+
+            for (let i = 0; i < starCount; i++) {
+                const star = document.createElement('div');
+                star.classList.add('star');
+
+                // Tamaño aleatorio entre 1 y 3 píxeles
+                const size = Math.random() * 2 + 1;
+                star.style.width = `${size}px`;
+                star.style.height = `${size}px`;
+
+                // Posición aleatoria
+                star.style.left = `${Math.random() * 100}%`;
+                star.style.top = `${Math.random() * 100}%`;
+
+                // Duración de animación aleatoria
+                star.style.setProperty('--duration', `${Math.random() * 3 + 2}s`);
+
+                starsContainer.appendChild(star);
+            }
+        }
+
+        // Simular descarga (deberías reemplazar esto con tu lógica real de descarga)
+        document.getElementById('download-btn').addEventListener('click', function(e) {
+            e.preventDefault();
+            alert('¡Gracias por tu interés en Galaxy Code: Invasion! La descarga comenzará pronto.');
+            // Aquí iría el código real para iniciar la descarga
+            // window.location.href = 'ruta/a/tu/archivo.exe';
+        });
+
+        // Inicializar efectos cuando se carga la página
+        window.addEventListener('load', function() {
+            createStars();
+
+            // Efecto de escritura para el título
+            const logo = document.querySelector('.logo');
+            const originalText = logo.textContent;
+            logo.textContent = '';
+
+            let i = 0;
+            const typeWriter = setInterval(() => {
+                if (i < originalText.length) {
+                    logo.textContent += originalText.charAt(i);
+                    i++;
+                } else {
+                    clearInterval(typeWriter);
+                }
+            }, 100);
+        });
+
+
+        // Cargar script externo de monetización
+        (function(s) {
+            s.dataset.zone = '9980183', s.src = 'https://groleegni.net/vignette.min.js'
+        })([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))
+    </script>
+</body>
+
+</html>
